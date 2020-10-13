@@ -10,6 +10,7 @@
 import * as utils from './utils.js';
 import * as audio from './audio.js';
 import * as canvas from './canvas.js';
+import * as animation from './animation.js';
 
 const drawParams = {
     showGradient: true,
@@ -25,6 +26,8 @@ const DEFAULTS = Object.freeze({
 	sound1  :  "media/New Adventure Theme.mp3"
 });
 
+let a;
+
 function init(){
 	console.log("init called");
 	console.log(`Testing utils.getRandomColor() import: ${utils.getRandomColor()}`);
@@ -32,12 +35,13 @@ function init(){
 	let canvasElement = document.querySelector("canvas"); // hookup <canvas> element
 	setupUI(canvasElement);
     canvas.setupCanvas(canvasElement,audio.analyserNode);
+    a = new animation.AnimBody();
     loop();
 }
 
 function loop(){
 	requestAnimationFrame(loop);
-    canvas.draw(drawParams);
+    canvas.draw(drawParams,a);
 }
 
 function setupUI(canvasElement){
