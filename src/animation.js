@@ -22,7 +22,6 @@ class Vertex{
 //        if(this.keyframes.length-1 <= frameNumber) this.keyframes[frameNumber] = frame;
 //        else this.keyframes.push(frame);
         this.keyframes.push(frame);
-        console.log(this.keyframes);
     }
     
     Interpolate(value=0){
@@ -37,11 +36,6 @@ class Vertex{
     //returns y2 between y1 and y3 at x3 time
     LinearInterpolation(y1,y3,x2){
         return (x2 * (y3-y1)) + y1;
-    }
-    
-    //garbage method because I am a garbage person
-    SetEasyTestFrame(){
-        this.AddKeyframe(this.x > this.parent.x ? this.x + 20 : this.x - 20,this.y-50);
     }
 }
 
@@ -62,17 +56,8 @@ class AnimBody{
         this.rightKnee = new Vertex(this.root.x+30,this.root.y+30,this.root);
         this.rightFoot = new Vertex(this.rightKnee.x+20,this.rightKnee.y+30,this.rightKnee);
         
-        this.shoulders.SetEasyTestFrame();
-        this.leftElbow.SetEasyTestFrame();
-        this.leftHand.SetEasyTestFrame();
-        this.rightElbow.SetEasyTestFrame();
-        this.rightHand.SetEasyTestFrame();
-        this.head.SetEasyTestFrame();
-        this.leftKnee.SetEasyTestFrame();
-        this.leftFoot.SetEasyTestFrame();
-        this.rightKnee.SetEasyTestFrame();
-        this.rightFoot.SetEasyTestFrame();
-        this.root.AddKeyframe(this.root.x,this.root.y);
+        this.leftElbow.AddKeyframe(this.leftElbow.x,this.leftElbow.y+20);
+        this.leftHand.AddKeyframe(this.leftHand.x,this.leftHand.y+40);
     }
     
     draw(ctx){
@@ -82,8 +67,10 @@ class AnimBody{
     drawVertex(v,ctx){
         
         //disgusting temp animation test stuff
-        let d = new Date();
-        v.Interpolate(Math.sin(d.getTime()*0.001));
+        if(v.keyframes.length > 1){
+            let d = new Date();
+            v.Interpolate(Math.sin(d.getTime()*0.001));
+        }
         
         ctx.save();
         ctx.fillStyle = "white";
