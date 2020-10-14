@@ -35,7 +35,7 @@ function init(){
 	let canvasElement = document.querySelector("canvas"); // hookup <canvas> element
 	setupUI(canvasElement);
     canvas.setupCanvas(canvasElement,audio.analyserNode);
-    a = new animation.AnimBody();
+    a = new animation.AnimBody(canvasElement.width/2,canvasElement.height/2);
     loop();
 }
 
