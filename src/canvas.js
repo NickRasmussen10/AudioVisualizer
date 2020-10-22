@@ -159,4 +159,8 @@ function draw(params={}, animBody){
 		
 }
 
-export {setupCanvas,draw};
+function ChangeGradient(color1, color2){
+    gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0.25,color:color1},{percent:1.0,color:color2}]);
+}
+
+export {setupCanvas,draw,ChangeGradient};

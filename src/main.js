@@ -47,6 +47,15 @@ const controllerObject={
     Play(){
         playing=!playing
         PlayAudio(playing);
+    },
+    G1(){
+        canvas.ChangeGradient("#e68e00","#000000");
+    },
+    G2(){
+        canvas.ChangeGradient("#9305e6","#0af722");
+    },
+    G3(){
+        canvas.ChangeGradient("#b00f00","#000000");
     }
 }
 
@@ -80,7 +89,12 @@ function init(){
     gui.add(controllerObject,'Play').name("Play/Pause");
     gui.add(controllerObject,'Volume',0,100).name('Volume');
     gui.add(controllerObject,'TrackSelect',{SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
-    gui.add(controllerObject,'Gradient').name('Gradient');
+    gui.add(controllerObject,'Gradient').name('Show Gradient');
+    let g = gui.addFolder('Gradients');
+    g.add(controllerObject,'G1').name("Halloween");
+    g.add(controllerObject,'G2').name("Classic Witch");
+    g.add(controllerObject,'G3').name("Just Been Stabbed");
+    
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);
     a = new animation.AnimBody(canvasElement.width/2,canvasElement.height/2);
