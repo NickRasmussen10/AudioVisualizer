@@ -15,10 +15,10 @@ let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
 function setupCanvas(canvasElement,analyserNodeRef){
 	// create drawing context
 	ctx = canvasElement.getContext("2d");
-	canvasWidth = canvasElement.width;
-	canvasHeight = canvasElement.height;
+	canvasWidth = window.innerWidth;
+	canvasHeight = window.innerHeight;
 	// create a gradient that runs top to bottom
-	gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0.25,color:"#4c32a8"},{percent:1.0,color:"#42f5ef"}]);
+	gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0.25,color:"#e68e00"},{percent:1.0,color:"#000000"}]);
 	// keep a reference to the analyser node
 	analyserNode = analyserNodeRef;
 	// this is the array where the analyser data will be stored

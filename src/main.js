@@ -12,13 +12,11 @@ import * as audio from './audio.js';
 import * as canvas from './canvas.js';
 import * as animation from './animation.js';
 
+let playing=true;
 const controllerObject={
     volume : 30,
     track : "media/SSS.mp3",
-    play: false,
-    Play(){
-         //PlayPause(this.play);
-    },
+    gradient: true,
     set Volume(value){
         this.volume=value;
         audio.setVolume(value/10);
@@ -39,10 +37,17 @@ const controllerObject={
     get TrackSelect(){
       return this.track;  
     },
-    Gradient(){
-        
+    set Gradient(value){
+        this.gradient=value;
+        drawParams.showGradient = value;
+    },
+    get Gradient(){
+        return this.gradient;
+    },
+    Play(){
+        playing=!playing
+        PlayAudio(playing);
     }
-    
 }
 
 const drawParams = {
@@ -67,14 +72,15 @@ function init(){
     
 	let canvasElement = document.querySelector("canvas"); // hookup <canvas> element
     
-    const gui=new dat.GUI({width:400});
+    const gui=new dat.GUI({autoPlace:false,width:400});
+    let customContain=document.querySelector("#gui-container");
+    customContain.appendChild(gui.domElement);
     gui.close();
     
-    //gui.add(controllerObject,'Play').name('Play');
+    gui.add(controllerObject,'Play').name("Play/Pause");
     gui.add(controllerObject,'Volume',0,100).name('Volume');
     gui.add(controllerObject,'TrackSelect',{SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
-    //gui.add(controllerObject,'Gradient').name('Gradient');
-	setupUI(canvasElement);
+    gui.add(controllerObject,'Gradient').name('Gradient');
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);
     a = new animation.AnimBody(canvasElement.width/2,canvasElement.height/2);
@@ -86,49 +92,15 @@ function loop(){
     canvas.draw(drawParams,a);
 }
 
-function setupUI(canvasElement){
-    
-        let playButton = document.querySelector("#playButton");
-    
-    playButton.onclick = e =>{
-        console.log(`audioCtx.state before = ${audio.audioCtx.state}`);
-        
-        if(audio.audioCtx.state == "suspended"){
-            audio.audioCtx.resume();
-        }
-        console.log(`audioCtx.state after = ${audio.audioCtx.state}`);
-        
-        if(e.target.dataset.playing == "no"){
-            audio.playCurrentSound();
-            e.target.dataset.playing="yes";
-        }
-        else{
-            audio.pauseCurrentSound();
-            e.target.dataset.playing="no";
-        }
-    }
-    
-    document.querySelector("#gradientCB").onchange = function(e){drawParams.showGradient = e.target.checked;}
-    //document.querySelector("#noiseCB").onchange = function(e){drawParams.showNoise = e.target.checked;}
-    //document.querySelector("#invertCB").onchange = function(e){drawParams.showInvert = e.target.checked;}
-    //document.querySelector("#embossCB").onchange = function(e){drawParams.showEmboss = e.target.checked;}
-    
-} // end setupUI
 
-function PlayPause(value=false){
-        // check if context is in suspended state (autoplay policy)
-        if(audio.audioCtx.state == "suspended"){
-            audio.audioCtx.resume();
-        }
-        if(value == "false"){
-            // if track is currently paused, play it
-            audio.playCurrentSound();
-            value = "true"; // CSS will set the text to "Pause"
-        } else {
-            // if track is playing, pause it
-            audio.pauseCurrentSound();
-            value = "false"; // CSS will set the text to "Play"
-        }
+function PlayAudio(playing){
+    if(audio.audioCtx.state == "suspended"){
+        audio.audioCtx.resume();
     }
+    if(playing==false)audio.playCurrentSound();
+    if(playing)audio.pauseCurrentSound();
+}
+
+
 
 export {init};
