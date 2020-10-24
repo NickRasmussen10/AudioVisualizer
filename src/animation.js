@@ -30,12 +30,35 @@ class Vertex{
     }
     
     
-    //interpolates 1 dimension at a time
-    //x is "time", y is position
-    //assumes time is between x0=0 and x3=1
-    //returns y2 between y1 and y3 at x3 time
+    //interpolates y2 between two given points (1 and 3)
+    //x dimension is "time", y is position
+    //assumes time is between x1=0 and x3=1
+    //returns y2 between y1 and y3 at x2 time
     LinearInterpolation(y1,y3,x2){
         return (x2 * (y3-y1)) + y1;
+    }
+    
+    logVertex(){
+        let rVal = this.x + "," + this.y + ",";
+        for(let i = 0; i < this.children.length; i++){
+            rVal += this.children[i].logVertex();
+        }
+        return rVal;
+    }
+    
+    TestProximity(x,y){
+        let dist = Math.abs(this.x-x) + Math.abs(this.y-y);
+        let rVal = null;
+        
+        if(this.children.length > 0){
+            for(let i = 0; i < this.children.length; i++){
+                rVal = this.children[i].TestProximity(x,y);
+            }
+        }
+        
+        if(dist < 10) rVal = this;
+        
+        return rVal;
     }
 }
 
@@ -56,8 +79,17 @@ class AnimBody{
         this.rightKnee = new Vertex(this.root.x+30,this.root.y+30,this.root);
         this.rightFoot = new Vertex(this.rightKnee.x+20,this.rightKnee.y+30,this.rightKnee);
         
-        this.leftElbow.AddKeyframe(this.leftElbow.x,this.leftElbow.y+20);
-        this.leftHand.AddKeyframe(this.leftHand.x,this.leftHand.y+40);
+        
+        this.activeVertex = null;
+    }
+    
+    setActiveVertex(x,y){
+        
+    }
+    
+    //temp function because Javascript is a nightmare generator
+    logKeyframe(){
+        console.log(this.root.logVertex());
     }
     
     draw(ctx){

@@ -98,6 +98,20 @@ function init(){
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);
     a = new animation.AnimBody(canvasElement.width/2,canvasElement.height/2);
+    document.onmousedown = function(e){
+        a.setActiveVertex(e.clientX, e.clientY);
+        console.log(e.clientX,e.clientY);
+        console.log(a.root.x,a.root.y);
+    }
+    document.onmouseup = function(){
+        a.activeVertex = null;
+    }
+    document.addEventListener('mousemove', function(e){
+            if(a.activeVertex != null){
+                a.activeVertex.x = e.clientX - canvasElement.getBoundingClientRect().left;
+                a.activeVertex.y = e.clientY - canvasElement.getBoundingClientRect().left;
+            }
+    });
     loop();
 }
 
