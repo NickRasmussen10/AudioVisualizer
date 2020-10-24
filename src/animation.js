@@ -37,12 +37,13 @@ class Vertex{
         }
         
         if(value < 0.5){
-            this.x = this.LinearInterpolation(this.keyframes[0].x,this.keyframes[1].x,value * 2);
-            this.y = this.LinearInterpolation(this.keyframes[0].y,this.keyframes[1].y,value * 2);
+            this.x = this.LinearInterpolation(this.keyframes[0].x,this.keyframes[1].x,this.normalize(value,0.0,0.5));
+            this.y = this.LinearInterpolation(this.keyframes[0].y,this.keyframes[1].y,this.normalize(value,0.0,0.5));
         }
         else{
-            this.x = this.LinearInterpolation(this.keyframes[1].x,this.keyframes[2].x,value);
-            this.y = this.LinearInterpolation(this.keyframes[1].y,this.keyframes[2].y,value);
+            console.log(this.keyframes[2]);
+            this.x = this.LinearInterpolation(this.keyframes[1].x,this.keyframes[2].x,this.normalize(value,0.5,1.0));
+            this.y = this.LinearInterpolation(this.keyframes[1].y,this.keyframes[2].y,this.normalize(value,0.5,1.0));
         }
     }
     
@@ -52,6 +53,10 @@ class Vertex{
     //returns y2 between y1 and y3 at x2 time
     LinearInterpolation(y1,y3,x2){
         return (x2 * (y3-y1)) + y1;
+    }
+    
+    normalize(value, min, max){
+        return (value-min)/(max-min);
     }
     
     logVertex(){
