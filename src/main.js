@@ -100,8 +100,6 @@ function init(){
     a = new animation.AnimBody(canvasElement.width/2,canvasElement.height/2);
     document.onmousedown = function(e){
         a.setActiveVertex(e.clientX, e.clientY);
-        console.log(e.clientX,e.clientY);
-        console.log(a.root.x,a.root.y);
     }
     document.onmouseup = function(){
         a.activeVertex = null;

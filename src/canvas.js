@@ -49,6 +49,7 @@ function draw(params={}, animBody){
     }
     
     animBody.draw(ctx);
+    animBody.setKeyframe(audioData[0] * 0.003);
     
     
     
