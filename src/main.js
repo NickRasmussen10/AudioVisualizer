@@ -13,10 +13,12 @@ import * as canvas from './canvas.js';
 import * as animation from './animation.js';
 
 let playing=true;
+let flash=false;
 const controllerObject={
     volume : 30,
     track : "media/SSS.mp3",
     gradient: true,
+    flash:false,
     set Volume(value){
         this.volume=value;
         audio.setVolume(value/10);
@@ -28,11 +30,7 @@ const controllerObject={
     set TrackSelect(value){
         this.track=value;
         audio.loadSoundFile(value);
-        //pause the current track if it is playing
-        if(playButton.dataset.playing == "yes"){
-            playButton.dispatchEvent(new MouseEvent("click"));
-        }
-        
+        playing=!playing;
     },
     get TrackSelect(){
       return this.track;  
@@ -56,6 +54,13 @@ const controllerObject={
     },
     G3(){
         canvas.ChangeGradient("#b00f00","#000000");
+    },
+    set Flashing(value){
+        this.flash=value;
+        flash=value;
+    },
+    get Flashing(){
+        return this.flash;
     }
 }
 
@@ -90,6 +95,7 @@ function init(){
     gui.add(controllerObject,'Volume',0,100).name('Volume');
     gui.add(controllerObject,'TrackSelect',{SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
     gui.add(controllerObject,'Gradient').name('Show Gradient');
+    gui.add(controllerObject,'Flashing').name('Flashing Progress Bar');
     let g = gui.addFolder('Gradients');
     g.add(controllerObject,'G1').name("Halloween");
     g.add(controllerObject,'G2').name("Classic Witch");
@@ -118,7 +124,7 @@ function init(){
 function loop(){
 	requestAnimationFrame(loop);
     canvas.draw(drawParams,a);
-    canvas.updateProgressBar(audio.element);
+    canvas.updateProgressBar(audio.element,flash);
 }
 
 

@@ -41,7 +41,7 @@ class Vertex{
             this.y = this.LinearInterpolation(this.keyframes[0].y,this.keyframes[1].y,this.normalize(value,0.0,0.5));
         }
         else{
-            console.log(this.keyframes[2]);
+            //console.log(this.keyframes[2]);
             this.x = this.LinearInterpolation(this.keyframes[1].x,this.keyframes[2].x,this.normalize(value,0.5,1.0));
             this.y = this.LinearInterpolation(this.keyframes[1].y,this.keyframes[2].y,this.normalize(value,0.5,1.0));
         }
@@ -163,7 +163,7 @@ class AnimBody{
     
     //temp function because Javascript is a nightmare generator
     logKeyframe(){
-        console.log(this.root.logVertex());
+        //console.log(this.root.logVertex());
     }
     
     setKeyframe(value){
