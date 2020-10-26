@@ -97,6 +97,7 @@ function init(){
     
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);
+    
     a = new animation.AnimBody(canvasElement.width/2,canvasElement.height/2);
     document.onmousedown = function(e){
         a.setActiveVertex(e.clientX, e.clientY);
@@ -110,12 +111,14 @@ function init(){
                 a.activeVertex.y = e.clientY - canvasElement.getBoundingClientRect().left;
             }
     });
+    
     loop();
 }
 
 function loop(){
 	requestAnimationFrame(loop);
     canvas.draw(drawParams,a);
+    canvas.updateProgressBar(audio.element);
 }
 
 

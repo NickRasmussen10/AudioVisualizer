@@ -72,5 +72,13 @@ function setVolume(value){
     value = Number(value); // make sure that it's a Number rather than a String
     gainNode.gain.value = value;
 }
+function convertElapsedTime(inputSeconds){
+    let seconds=Math.floor(inputSeconds%60);
+    if(seconds<10){
+        seconds="0"+seconds;
+    }
+    let minutes=Math.floor(inputSeconds/60);
+    return minutes + ":" + seconds;
+}
 
-export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode};
+export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode,element};

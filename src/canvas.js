@@ -9,14 +9,14 @@
 
 import * as utils from './utils.js';
 
-let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
+let ctx,ctx2,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
 
 
 function setupCanvas(canvasElement,analyserNodeRef){
 	// create drawing context
 	ctx = canvasElement.getContext("2d");
 	canvasWidth = window.innerWidth;
-	canvasHeight = window.innerHeight;
+	canvasHeight = window.innerHeight-20;
 	// create a gradient that runs top to bottom
 	gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0.25,color:"#e68e00"},{percent:1.0,color:"#000000"}]);
 	// keep a reference to the analyser node
@@ -52,6 +52,11 @@ function draw(params={}, animBody){
     console.log(data);
     animBody.setKeyframe(data);
     animBody.draw(ctx);
+    
+    ctx.save();
+    ctx.fillStyle="#000000";
+    ctx.fillRect(0,canvasHeight,canvasWidth, 10);
+    ctx.restore();
     
     
     
@@ -166,4 +171,19 @@ function ChangeGradient(color1, color2){
     gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0.25,color:color1},{percent:1.0,color:color2}]);
 }
 
-export {setupCanvas,draw,ChangeGradient};
+
+function updateProgressBar(audioElement){
+    ctx.clearRect(0,canvasHeight,canvasWidth, 10);
+    ctx.fillStyle="blue";
+    ctx.fillRect(0,canvasHeight,canvasWidth, 10);
+    
+    let currentTime=audioElement.currentTime;
+    let duration=audioElement.duration;
+    
+    let percentage=currentTime/duration;
+    let progress=(canvasWidth*percentage);
+    ctx.fillStyle="#FFFFFF";
+    ctx.fillRect(0,canvasHeight,progress, 10);
+}
+
+export {setupCanvas,draw,ChangeGradient,updateProgressBar};
