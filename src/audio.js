@@ -83,39 +83,51 @@ function playCurrentSound(){
 function pauseCurrentSound(){
     element.pause();
 }
-function changeDistortionValue(value){
-    distortion.curve=makeDistortion(value);
+function changeDistortionValue(value,distorted){
+    if(distorted)distortion.curve=makeDistortion(value);
+    else distortion.curve=null;
+    //toggleDistortion();
 }
-function changeBassValue(value){
+function changeBassValue(value, bassOn){
+    if(bassOn){
     bassFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
     bassFilter.gain.setValueAtTime(value,audioCtx.currentTime);
+    }
+    else{bassFilter.gain.setValueAtTime(0,audioCtx.currentTime);}
+    //toggleBass();
 }
-function changeTrebleValue(value){
+function changeTrebleValue(value, trebleOn){
+    if(trebleOn){
     trebleFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
     trebleFilter.gain.setValueAtTime(value,audioCtx.currentTime);
+    }
+    else{
+        trebleFilter.gain.setValueAtTime(0,audioCtx.currentTime);
+    }
+    //toggleTreble();
 }
-function toggleBass(lowshelf){
+function toggleBass(lowshelf,value=15){
     if(lowshelf){
         bassFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
-        bassFilter.gain.setValueAtTime(15,audioCtx.currentTime);
+        bassFilter.gain.setValueAtTime(value,audioCtx.currentTime);
     }
     else{
         bassFilter.gain.setValueAtTime(0,audioCtx.currentTime);
     }
 }
-function toggleTreble(highshelf){
+function toggleTreble(highshelf, value=25){
     if(highshelf){
         trebleFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
-        trebleFilter.gain.setValueAtTime(25,audioCtx.currentTime);
+        trebleFilter.gain.setValueAtTime(value,audioCtx.currentTime);
     }
     else{
         trebleFilter.gain.setValueAtTime(0,audioCtx.currentTime);
     }
 }
-function toggleDistortion(dis){
+function toggleDistortion(dis,value=20){
     if(dis){
         distortion.curve=null;
-        distortion.curve=makeDistortion(20);
+        distortion.curve=makeDistortion(value);
     }
     else{
         distortion.curve=null;

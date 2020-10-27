@@ -17,7 +17,7 @@ let flash=false;
 let crowdSize = 5;
 let a;
 const controllerObject={
-    volume : 30,
+    volume : 1,
     track : "media/SSS.mp3",
     gradient: true,
     flash:false,
@@ -31,7 +31,7 @@ const controllerObject={
     distLvl:20,
     set Volume(value){
         this.volume=value;
-        audio.setVolume(value/10);
+        audio.setVolume(value);
     },
     get Volume(){
         return this.volume;
@@ -86,7 +86,7 @@ const controllerObject={
     },
     set DistLvl(value){
         this.distLvl=value;
-        audio.changeDistortionValue(value);
+        audio.toggleDistortion(this.dist,value);
     },
     get DistLvl(){
         return this.distLvl;
@@ -107,14 +107,14 @@ const controllerObject={
     },
     set BassLvl(value){
         this.bassLvl=value;
-        audio.changeBassValue(value);
+        audio.toggleBass(this.bass,value);
     },
     get BassLvl(){
         return this.bassLvl;
     },
     set TrebleLvl(value){
         this.trebleLvl=value;
-        audio.changeTrebleValue(value);
+        audio.toggleTreble(this.treble,value);
     },
     get TrebleLvl(){
         return this.trebleLvl;
@@ -151,7 +151,7 @@ function init(){
     gui.close();
     
     gui.add(controllerObject,'Play').name("Play/Pause");
-    gui.add(controllerObject,'Volume',0,100).name('Volume');
+    gui.add(controllerObject,'Volume',0,10).name('Volume');
     gui.add(controllerObject,'TrackSelect',{SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
     
     let aef=gui.addFolder('Audio Effects');
