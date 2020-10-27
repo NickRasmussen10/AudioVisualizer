@@ -1,38 +1,59 @@
 class Vertex{
-    constructor(parent){
+    constructor(parent,imgID = "bone"){
         if(parent){
             this.parent = parent;
             parent.AddChild(this);
         }
         this.children = [];
         this.keyframes = [];
+        this.imgID = imgID;
     }
     
     drawVertex(ctx){
-        ctx.save();
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
+//        ctx.save();
+//        ctx.fillStyle = "white";
+//        ctx.strokeStyle = "white";
+//        ctx.beginPath();
+//        ctx.arc(this.x,this.y,5,0,Math.PI * 2);
+//        ctx.fill();
+//        ctx.closePath();
+//        ctx.restore();
+        
+        
+        //so this is probably the single worst solution to drawing the skeleton sprites possible but whatever I'll come back to it if I have time
         for(let i = 0; i < this.children.length; i++){
-//            ctx.save();
-//            ctx.translate(this.x,this.y);
-//            ctx.rotate(Math.atan((this.x-this.children[i].x) / (this.y-this.children[i].y)));
-//            var img = document.getElementById("bone");
-//            ctx.drawImage(img,this.children[i].x,this.children[i].y,img.width*0.2,img.height*0.2);
-//            ctx.restore();
-            
+            let img = document.getElementById(this.children[i].imgID);
+            if(this.children[i].imgID == "bone"){
+                let dist = Math.abs(this.children[i].x-this.x) + Math.abs(this.children[i].y-this.y);
+                let scale = this.normalize(dist,0,300);
+                ctx.save();
+                ctx.translate(this.children[i].x,this.children[i].y);
+                ctx.rotate(Math.atan((this.children[i].y-this.y) / (this.children[i].x - this.x)));
+                ctx.drawImage(img,-img.width*scale/2,-img.height*scale/2,img.width*scale,img.height*scale);
+                ctx.restore();
+            }
+            else if(this.children[i].imgID == "skull"){
+                let scale = 0.5;
+                ctx.save();
+                ctx.translate(this.x - img.width*scale/2,this.y-img.height*scale);
+                ctx.drawImage(img,0,0,img.width*scale,img.height*scale);
+                ctx.restore();
+            }
+            else if(this.children[i].imgID == "torso"){
+                let scale = 0.3;
+                ctx.save();
+                ctx.translate(this.children[i].x-(img.width * scale / 2),this.children[i].y);
+                ctx.drawImage(img,0,0,img.width*scale,img.height*scale);
+                ctx.restore();
+            }
             this.children[i].drawVertex(ctx);
-            
-            ctx.beginPath();
-            ctx.moveTo(this.x,this.y);
-            ctx.lineTo(this.children[i].x,this.children[i].y);
-            ctx.stroke();
-            ctx.closePath();
+//            
+//            ctx.beginPath();
+//            ctx.moveTo(this.x,this.y);
+//            ctx.lineTo(this.children[i].x,this.children[i].y);
+//            ctx.stroke();
+//            ctx.closePath();
         }
-        ctx.beginPath();
-        ctx.arc(this.x,this.y,5,0,Math.PI * 2);
-        ctx.fill();
-        ctx.closePath();
-        ctx.restore();
     }
     
     AddChild(vertex){
@@ -147,15 +168,15 @@ class Vertex{
 class AnimBody{
     constructor(xPos, yPos){
         this.root = new Vertex();
-        this.pelvis = new Vertex(this.root);
-        this.shoulders = new Vertex(this.pelvis);
+        this.pelvis = new Vertex(this.root,"torso");
+        this.shoulders = new Vertex(this.pelvis,"torso");
         
         this.leftElbow = new Vertex(this.shoulders);
         this.leftHand = new Vertex(this.leftElbow);
         this.rightElbow = new Vertex(this.shoulders);
         this.rightHand = new Vertex(this.rightElbow);
         
-        this.head = new Vertex(this.shoulders);
+        this.head = new Vertex(this.shoulders,"skull");
         
         this.leftKnee = new Vertex(this.pelvis);
         this.leftFoot = new Vertex(this.leftKnee);

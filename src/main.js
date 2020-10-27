@@ -14,7 +14,7 @@ import * as animation from './animation.js';
 
 let playing=true;
 let flash=false;
-let crowdSize = 10;
+let crowdSize = 2;
 let a;
 const controllerObject={
     volume : 30,
