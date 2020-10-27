@@ -14,6 +14,8 @@ import * as animation from './animation.js';
 
 let playing=true;
 let flash=false;
+let crowdSize = 10;
+let a;
 const controllerObject={
     volume : 30,
     track : "media/SSS.mp3",
@@ -30,7 +32,8 @@ const controllerObject={
     },
     set Crowd(value){
         this.crowd=value;
-        //Put all the crowd slider code here
+        crowdSize = value;
+        setCrowd();
     },
     get Crowd(){
       return this.crowd;  
@@ -99,9 +102,6 @@ const DEFAULTS = Object.freeze({
 	sound1  :  "media/SSS.mp3"
 });
 
-const crowdSize = 2;
-let a;
-
 function init(){
 	console.log("init called");
     audio.setupWebaudio(DEFAULTS.sound1);
@@ -133,23 +133,28 @@ function init(){
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);
     
+    setCrowd();
+    
+//    document.onmousedown = function(e){
+//        a.setActiveVertex(e.clientX - a.position.x, e.clientY - a.position.y);
+//    }
+//    document.onmouseup = function(){
+//        a.activeVertex = null;
+//    }
+//    document.addEventListener('mousemove', function(e){
+//            if(a.activeVertex != null){
+//                a.activeVertex.moveTo(e.clientX - canvasElement.getBoundingClientRect().left - a.position.x,e.clientY - canvasElement.getBoundingClientRect().top - a.position.y);
+//            }
+//    });
+    loop();
+}
+
+function setCrowd(){
+    let canvasElement = document.querySelector("canvas");
     a = [];
     for(let i = 0; i < crowdSize; i++){
         a.push(new animation.AnimBody(canvasElement.width/crowdSize * i ,canvasElement.height/2));
     }
-    
-    document.onmousedown = function(e){
-        a.setActiveVertex(e.clientX - a.position.x, e.clientY - a.position.y);
-    }
-    document.onmouseup = function(){
-        a.activeVertex = null;
-    }
-    document.addEventListener('mousemove', function(e){
-            if(a.activeVertex != null){
-                a.activeVertex.moveTo(e.clientX - canvasElement.getBoundingClientRect().left - a.position.x,e.clientY - canvasElement.getBoundingClientRect().top - a.position.y);
-            }
-    });
-    loop();
 }
 
 function loop(){
