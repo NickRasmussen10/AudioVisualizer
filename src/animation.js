@@ -24,8 +24,8 @@ class Vertex{
     }
     
     Interpolate(value=0){
-        this.x = this.LinearInterpolation(this.keyframes[0].x,this.keyframes[1].x,value);
-        this.y = this.LinearInterpolation(this.keyframes[0].y,this.keyframes[1].y,value);
+        this.x = this.LinearInterpolation(this.keyframes[0].x + Math.random() * 100,this.keyframes[1].x + Math.random() * 100,value);
+        this.y = this.LinearInterpolation(this.keyframes[0].y + Math.random() * 10,this.keyframes[1].y + Math.random() * 10,value);
     }
     
     
@@ -37,13 +37,12 @@ class Vertex{
         }
         
         if(value < 0.5){
-            this.x = this.LinearInterpolation(this.keyframes[0].x,this.keyframes[1].x,this.normalize(value,0.0,0.5));
-            this.y = this.LinearInterpolation(this.keyframes[0].y,this.keyframes[1].y,this.normalize(value,0.0,0.5));
+            this.x = this.LinearInterpolation(this.keyframes[0].x,this.keyframes[1].x,this.normalize(value,0,64));
+            this.y = this.LinearInterpolation(this.keyframes[0].y,this.keyframes[1].y,this.normalize(value,0,64));
         }
         else{
-            console.log(this.keyframes[2]);
-            this.x = this.LinearInterpolation(this.keyframes[1].x,this.keyframes[2].x,this.normalize(value,0.5,1.0));
-            this.y = this.LinearInterpolation(this.keyframes[1].y,this.keyframes[2].y,this.normalize(value,0.5,1.0));
+            this.x = this.LinearInterpolation(this.keyframes[1].x,this.keyframes[2].x,this.normalize(value,0,64));
+            this.y = this.LinearInterpolation(this.keyframes[1].y,this.keyframes[2].y,this.normalize(value,0,64));
         }
     }
     
@@ -56,6 +55,7 @@ class Vertex{
     }
     
     normalize(value, min, max){
+        //console.log((value-min)/(max-min));
         return (value-min)/(max-min);
     }
     
