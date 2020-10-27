@@ -14,7 +14,7 @@ import * as animation from './animation.js';
 
 let playing=true;
 let flash=false;
-let crowdSize = 2;
+let crowdSize = 5;
 let a;
 const controllerObject={
     volume : 30,
@@ -153,7 +153,7 @@ function setCrowd(){
     let canvasElement = document.querySelector("canvas");
     a = [];
     for(let i = 0; i < crowdSize; i++){
-        a.push(new animation.AnimBody(canvasElement.width/crowdSize * i ,canvasElement.height/2));
+        a.push(new animation.AnimBody(canvasElement.width/crowdSize * i ,canvasElement.height/2,parseInt(128/crowdSize * i)));
     }
 }
 
