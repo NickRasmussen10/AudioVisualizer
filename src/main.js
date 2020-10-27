@@ -22,7 +22,7 @@ const controllerObject={
     gradient: true,
     flash:false,
     dist:false,
-    crowd: 10,
+    crowd: 5,
     set Volume(value){
         this.volume=value;
         audio.setVolume(value/10);
@@ -119,7 +119,7 @@ function init(){
     gui.add(controllerObject,'Gradient').name('Show Gradient');
     gui.add(controllerObject,'Flashing').name('Flashing Progress Bar');
     gui.add(controllerObject,'Dist').name('Distortion');
-    gui.add(controllerObject,'Crowd',0,100).name('Crowd Control');
+    gui.add(controllerObject,'Crowd',1,10).name('Crowd Control');
     let g = gui.addFolder('Gradients');
     g.add(controllerObject,'G1').name("Halloween");
     g.add(controllerObject,'G2').name("Classic Witch");
