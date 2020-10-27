@@ -49,10 +49,10 @@ function draw(params={}, animBody){
         ctx.fillRect(0,0,canvasWidth,canvasHeight);
         ctx.restore();
     }
+
     
-    let data = (audioData[0])/(500);
-    animBody.setKeyframe(data);
     animBody.draw(ctx);
+    //animBody.setActiveKeyframe(audioData[audioData.length/2]);
     
     
     ctx.save();

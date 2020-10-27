@@ -17,3 +17,7 @@ canvas {
     margin-left: 1rem;
     z-index: 0;
 }
+
+#keyframeLow,#keyframeMed,#keyframeHigh{
+    display: none;
+}

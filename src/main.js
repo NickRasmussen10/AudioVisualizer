@@ -133,11 +133,9 @@ function init(){
     }
     document.addEventListener('mousemove', function(e){
             if(a.activeVertex != null){
-                a.activeVertex.x = e.clientX - canvasElement.getBoundingClientRect().left;
-                a.activeVertex.y = e.clientY - canvasElement.getBoundingClientRect().left;
+                a.activeVertex.moveTo(e.clientX - canvasElement.getBoundingClientRect().left,e.clientY - canvasElement.getBoundingClientRect().top);
             }
     });
-    
     loop();
 }
 
