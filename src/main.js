@@ -138,7 +138,7 @@ function setCrowd(){
     let canvasElement = document.querySelector("canvas");
     a = [];
     for(let i = 0; i < crowdSize; i++){
-        a.push(new animation.AnimBody(canvasElement.width/crowdSize * i ,canvasElement.height/2));
+        a.push(new animation.AnimBody(canvasElement.width/crowdSize * i ,canvasElement.height/2,parseInt(128/crowdSize * i)));
     }
 }
 
