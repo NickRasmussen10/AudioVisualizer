@@ -3,7 +3,7 @@ let audioCtx;
 
 // **These are "private" properties - these will NOT be visible outside of this module (i.e. file)**
 // 2 - WebAudio nodes that are part of our WebAudio audio routing graph
-let element, sourceNode, analyserNode, gainNode;
+let element, sourceNode, analyserNode, gainNode, oscillator;
 
 // 3 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -54,6 +54,11 @@ function setupWebaudio(filePath){
     sourceNode.connect(analyserNode);
     analyserNode.connect(gainNode);
     gainNode.connect(audioCtx.destination);
+    oscillator=audioCtx.createOscillator();
+    oscillator.type='sine';
+    oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
+    oscillator.start();
+     
 }
 
 function loadSoundFile(filePath){
@@ -72,5 +77,22 @@ function setVolume(value){
     value = Number(value); // make sure that it's a Number rather than a String
     gainNode.gain.value = value;
 }
+function convertElapsedTime(inputSeconds){
+    let seconds=Math.floor(inputSeconds%60);
+    if(seconds<10){
+        seconds="0"+seconds;
+    }
+    let minutes=Math.floor(inputSeconds/60);
+    return minutes + ":" + seconds;
+}
+function oscillatorStart(type){
+    oscillator.type=type;
+}
+function oscillatorOn(){
+    oscillator.connect(audioCtx.destination);
+}
+function oscillatorOff(){
+    oscillator.disconnect(audioCtx.destination);
+}
 
-export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode};
+export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode,element,oscillatorOn,oscillatorOff,oscillatorStart};
