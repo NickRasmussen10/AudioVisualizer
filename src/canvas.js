@@ -51,7 +51,8 @@ function draw(params={}, animBodies){
     }
 
     for(let a = 0; a < animBodies.length; a++){
-        animBodies[a].setActiveKeyframe(audioData[parseInt(audioData.length/animBodies.length) * a]);
+        let dataIndex = parseInt((audioData.length/animBodies.length) * a);
+        animBodies[a].setActiveKeyframe(audioData[dataIndex]);
         animBodies[a].draw(ctx);
     }
     

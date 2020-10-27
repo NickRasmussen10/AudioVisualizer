@@ -18,6 +18,6 @@ canvas {
     z-index: 0;
 }
 
-#keyframeLow,#keyframeMed,#keyframeHigh{
+.keyframe{
     display: none;
 }

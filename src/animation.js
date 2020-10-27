@@ -13,7 +13,15 @@ class Vertex{
         ctx.fillStyle = "white";
         ctx.strokeStyle = "white";
         for(let i = 0; i < this.children.length; i++){
+//            ctx.save();
+//            ctx.translate(this.x,this.y);
+//            ctx.rotate(Math.atan((this.x-this.children[i].x) / (this.y-this.children[i].y)));
+//            var img = document.getElementById("bone");
+//            ctx.drawImage(img,this.children[i].x,this.children[i].y,img.width*0.2,img.height*0.2);
+//            ctx.restore();
+            
             this.children[i].drawVertex(ctx);
+            
             ctx.beginPath();
             ctx.moveTo(this.x,this.y);
             ctx.lineTo(this.children[i].x,this.children[i].y);
