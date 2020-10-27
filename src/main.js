@@ -19,6 +19,7 @@ const controllerObject={
     track : "media/SSS.mp3",
     gradient: true,
     flash:false,
+    osc:false,
     set Volume(value){
         this.volume=value;
         audio.setVolume(value/10);
@@ -61,6 +62,14 @@ const controllerObject={
     },
     get Flashing(){
         return this.flash;
+    },
+    set Oscillator(value){
+        this.osc=value;
+        if(value)audio.oscillatorOn();
+        else if(value==false)audio.oscillatorOff();
+    },
+    get Oscillator(){
+        return this.osc;
     }
 }
 
@@ -72,7 +81,12 @@ const drawParams = {
     showInvert: false,
     showEmboss: false
 };
-
+const param={
+    o1:false,
+    o2:true,
+    o3:false,
+    o4:false
+};
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
 	sound1  :  "media/SSS.mp3"
@@ -96,10 +110,16 @@ function init(){
     gui.add(controllerObject,'TrackSelect',{SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
     gui.add(controllerObject,'Gradient').name('Show Gradient');
     gui.add(controllerObject,'Flashing').name('Flashing Progress Bar');
+    gui.add(controllerObject,'Oscillator').name('Activate Oscillator Node');
     let g = gui.addFolder('Gradients');
     g.add(controllerObject,'G1').name("Halloween");
     g.add(controllerObject,'G2').name("Classic Witch");
     g.add(controllerObject,'G3').name("Just Been Stabbed");
+    let o=gui.addFolder('Oscillator Options');
+    o.add(param, 'o1').name("Square").listen().onChange(function(){SetCheck('o1'); audio.oscillatorStart('square');});
+    o.add(param, 'o2').name("Sine").listen().onChange(function(){SetCheck('o2'); audio.oscillatorStart('sine');});
+    o.add(param, 'o3').name("Sawtooth").listen().onChange(function(){SetCheck('o3'); audio.oscillatorStart('sawtooth');});
+    o.add(param, 'o4').name("Triangle").listen().onChange(function(){SetCheck('o4'); audio.oscillatorStart('triangle');});
     
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);
@@ -135,7 +155,11 @@ function PlayAudio(playing){
     if(playing==false)audio.playCurrentSound();
     if(playing)audio.pauseCurrentSound();
 }
-
-
+function SetCheck(prop){
+    for(let p in param){
+        param[p]=false;
+    }
+    param[prop]=true;
+}
 
 export {init};
