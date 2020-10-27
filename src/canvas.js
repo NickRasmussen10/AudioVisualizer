@@ -48,7 +48,9 @@ function draw(params={}, animBody){
         ctx.restore();
     }
     
-    animBody.setKeyframe(audioData[audioData.length/2]);
+    let data = (audioData[0])/(500);
+    console.log(data);
+    animBody.setKeyframe(data);
     animBody.draw(ctx);
     
     
