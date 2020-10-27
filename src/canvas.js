@@ -9,14 +9,16 @@
 
 import * as utils from './utils.js';
 
-let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
+let ctx,ctx2,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
 
 
 function setupCanvas(canvasElement,analyserNodeRef){
 	// create drawing context
 	ctx = canvasElement.getContext("2d");
-	canvasWidth = window.innerWidth;
+	canvasWidth = 1000;
 	canvasHeight = window.innerHeight;
+    console.log(canvasWidth);
+    console.log(canvasHeight);
 	// create a gradient that runs top to bottom
 	gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0.25,color:"#e68e00"},{percent:1.0,color:"#000000"}]);
 	// keep a reference to the analyser node
@@ -49,10 +51,14 @@ function draw(params={}, animBody){
     }
     
     let data = (audioData[0])/(500);
-    console.log(data);
     animBody.setKeyframe(data);
     animBody.draw(ctx);
     
+    
+    ctx.save();
+    ctx.fillStyle="#000000";
+    ctx.fillRect(0,canvasHeight-20,canvasWidth, 10);
+    ctx.restore();
     
     
     //BELOW IS ALL THE VISUALZER STUFF FROM HW 3, KEEPING IT JUST IN CASE WE NEED IT LATER
@@ -166,4 +172,23 @@ function ChangeGradient(color1, color2){
     gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0.25,color:color1},{percent:1.0,color:color2}]);
 }
 
-export {setupCanvas,draw,ChangeGradient};
+function updateProgressBar(audioElement,flashing){
+    ctx.clearRect(0,canvasHeight-20,canvasWidth, 10);
+    ctx.fillStyle="#000000";
+    ctx.fillRect(0,canvasHeight-20,canvasWidth, 10);
+    
+    let currentTime=audioElement.currentTime;
+    let duration=audioElement.duration;
+    
+    let percentage=currentTime/duration;
+    let progress=(canvasWidth*percentage);
+    if(flashing){
+        ctx.fillStyle=utils.getRandomColor();
+    }
+    else{
+        ctx.fillStyle="#FFFFFF";
+    }
+    ctx.fillRect(0,canvasHeight-20,progress, 10);
+}
+
+export {setupCanvas,draw,ChangeGradient,updateProgressBar};
