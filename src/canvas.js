@@ -52,7 +52,7 @@ function draw(params={}, animBody){
 
     
     animBody.draw(ctx);
-    //animBody.setActiveKeyframe(audioData[audioData.length/2]);
+    animBody.setActiveKeyframe(audioData[audioData.length/2]);
     
     
     ctx.save();

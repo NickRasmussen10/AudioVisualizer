@@ -126,14 +126,14 @@ function init(){
     
     a = new animation.AnimBody(canvasElement.width/2,canvasElement.height/2);
     document.onmousedown = function(e){
-        a.setActiveVertex(e.clientX, e.clientY);
+        a.setActiveVertex(e.clientX - a.position.x, e.clientY - a.position.y);
     }
     document.onmouseup = function(){
         a.activeVertex = null;
     }
     document.addEventListener('mousemove', function(e){
             if(a.activeVertex != null){
-                a.activeVertex.moveTo(e.clientX - canvasElement.getBoundingClientRect().left,e.clientY - canvasElement.getBoundingClientRect().top);
+                a.activeVertex.moveTo(e.clientX - canvasElement.getBoundingClientRect().left - a.position.x,e.clientY - canvasElement.getBoundingClientRect().top - a.position.y);
             }
     });
     loop();
