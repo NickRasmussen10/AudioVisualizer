@@ -92,6 +92,7 @@ const DEFAULTS = Object.freeze({
 	sound1  :  "media/SSS.mp3"
 });
 
+const crowdSize = 5;
 let a;
 
 function init(){
@@ -124,7 +125,11 @@ function init(){
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);
     
-    a = new animation.AnimBody(canvasElement.width/2,canvasElement.height/2);
+    a = [];
+    for(let i = 0; i < crowdSize; i++){
+        a.push(new animation.AnimBody(canvasElement.width/crowdSize * i + 100,canvasElement.height/2));
+    }
+    
     document.onmousedown = function(e){
         a.setActiveVertex(e.clientX - a.position.x, e.clientY - a.position.y);
     }

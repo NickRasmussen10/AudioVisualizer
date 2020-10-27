@@ -27,7 +27,7 @@ function setupCanvas(canvasElement,analyserNodeRef){
 	audioData = new Uint8Array(analyserNode.fftSize/2);
 }
 
-function draw(params={}, animBody){
+function draw(params={}, animBodies){
   // 1 - populate the audioData array with the frequency data from the analyserNode
 	// notice these arrays are passed "by reference" 
 	analyserNode.getByteFrequencyData(audioData);
@@ -50,9 +50,10 @@ function draw(params={}, animBody){
         ctx.restore();
     }
 
-    
-    animBody.draw(ctx);
-    animBody.setActiveKeyframe(audioData[audioData.length/2]);
+    for(let a = 0; a < animBodies.length; a++){
+        animBodies[a].setActiveKeyframe(audioData[parseInt(audioData.length/animBodies.length) * a]);
+        animBodies[a].draw(ctx);
+    }
     
     
     ctx.save();
