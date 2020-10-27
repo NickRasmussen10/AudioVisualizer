@@ -10,50 +10,55 @@ class Vertex{
     }
     
     drawVertex(ctx){
-        ctx.save();
-        ctx.fillStyle = "white";
-        ctx.beginPath();
-        ctx.arc(this.x,this.y,5,0,Math.PI * 2);
-        ctx.fill();
-        ctx.closePath();
-        ctx.restore();
+//        ctx.save();
+//        ctx.fillStyle = "white";
+//        ctx.beginPath();
+//        ctx.arc(this.x,this.y,5,0,Math.PI * 2);
+//        ctx.fill();
+//        ctx.closePath();
+//        ctx.restore();
         
         
         //so this is probably the single worst solution to drawing the skeleton sprites possible but whatever I'll come back to it if I have time
         for(let i = 0; i < this.children.length; i++){
-//            let img = document.getElementById(this.children[i].imgID);
-//            if(this.children[i].imgID == "bone"){
-//                let dist = Math.abs(this.children[i].x-this.x) + Math.abs(this.children[i].y-this.y);
-//                let scale = this.normalize(dist,0,300);
-//                ctx.save();
-//                ctx.translate(this.children[i].x,this.children[i].y);
-//                ctx.rotate(Math.atan((this.children[i].y-this.y) / (this.children[i].x - this.x)));
-//                ctx.drawImage(img,-img.width*scale/2,-img.height*scale/2,img.width*scale,img.height*scale);
-//                ctx.restore();
-//            }
-//            else if(this.children[i].imgID == "skull"){
-//                let scale = 0.5;
-//                ctx.save();
-//                ctx.translate(this.x - img.width*scale/2,this.y-img.height*scale);
-//                ctx.drawImage(img,0,0,img.width*scale,img.height*scale);
-//                ctx.restore();
-//            }
-//            else if(this.children[i].imgID == "torso"){
-//                let scale = 0.3;
-//                ctx.save();
-//                ctx.translate(this.children[i].x-(img.width * scale / 2),this.children[i].y);
-//                ctx.drawImage(img,0,0,img.width*scale,img.height*scale);
-//                ctx.restore();
-//            }
+            let img = document.getElementById(this.children[i].imgID);
+            if(this.children[i].imgID == "bone"){
+                let dist = Math.abs(this.children[i].x-this.x) + Math.abs(this.children[i].y-this.y);
+                let scale = 0.15;
+                
+                ctx.save();
+                
+                ctx.translate((this.children[i].x+this.x)/2,(this.children[i].y + this.y)/2);
+                
+                ctx.rotate(Math.atan((this.children[i].y-this.y) / (this.children[i].x - this.x)));
+                
+                ctx.drawImage(img,-img.width*scale/2,-img.height*scale/2,img.width*scale,img.height*scale);
+                
+                ctx.restore();
+            }
+            else if(this.children[i].imgID == "skull"){
+                let scale = 0.5;
+                ctx.save();
+                ctx.translate(this.x - img.width*scale/2,this.y-img.height*scale);
+                ctx.drawImage(img,0,0,img.width*scale,img.height*scale);
+                ctx.restore();
+            }
+            else if(this.children[i].imgID == "torso"){
+                let scale = 0.3;
+                ctx.save();
+                ctx.translate(this.children[i].x-(img.width * scale / 2),this.children[i].y);
+                ctx.drawImage(img,0,0,img.width*scale,img.height*scale);
+                ctx.restore();
+            }
             this.children[i].drawVertex(ctx);
-            ctx.save();
-            ctx.strokeStyle = "white";
-            ctx.beginPath();
-            ctx.moveTo(this.x,this.y);
-            ctx.lineTo(this.children[i].x,this.children[i].y);
-            ctx.stroke();
-            ctx.closePath();
-            ctx.restore();
+//            ctx.save();
+//            ctx.strokeStyle = "white";
+//            ctx.beginPath();
+//            ctx.moveTo(this.x,this.y);
+//            ctx.lineTo(this.children[i].x,this.children[i].y);
+//            ctx.stroke();
+//            ctx.closePath();
+//            ctx.restore();
         }
     }
     
