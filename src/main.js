@@ -19,14 +19,21 @@ const controllerObject={
     track : "media/SSS.mp3",
     gradient: true,
     flash:false,
-    osc:false,
+    dist:false,
+    crowd: 10,
     set Volume(value){
         this.volume=value;
         audio.setVolume(value/10);
-        //volumeLabel.innerHTML = Math.round((e.target.value/2) * 100);
     },
     get Volume(){
         return this.volume;
+    },
+    set Crowd(value){
+        this.crowd=value;
+        //Put all the crowd slider code here
+    },
+    get Crowd(){
+      return this.crowd;  
     },
     set TrackSelect(value){
         this.track=value;
@@ -63,13 +70,13 @@ const controllerObject={
     get Flashing(){
         return this.flash;
     },
-    set Oscillator(value){
-        this.osc=value;
-        if(value)audio.oscillatorOn();
-        else if(value==false)audio.oscillatorOff();
+    set Dist(value){
+        this.dist=value;
+        if(value)audio.enableDistortion();
+        else if(value==false)audio.disableDistortion();
     },
-    get Oscillator(){
-        return this.osc;
+    get Dist(){
+        return this.dist;
     }
 }
 
@@ -83,9 +90,9 @@ const drawParams = {
 };
 const param={
     o1:false,
-    o2:true,
+    o2:false,
     o3:false,
-    o4:false
+    o4:true
 };
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -111,16 +118,17 @@ function init(){
     gui.add(controllerObject,'TrackSelect',{SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
     gui.add(controllerObject,'Gradient').name('Show Gradient');
     gui.add(controllerObject,'Flashing').name('Flashing Progress Bar');
-    gui.add(controllerObject,'Oscillator').name('Activate Oscillator Node');
+    gui.add(controllerObject,'Dist').name('Distortion');
+    gui.add(controllerObject,'Crowd',0,100).name('Crowd Control');
     let g = gui.addFolder('Gradients');
     g.add(controllerObject,'G1').name("Halloween");
     g.add(controllerObject,'G2').name("Classic Witch");
     g.add(controllerObject,'G3').name("Just Been Stabbed");
-    let o=gui.addFolder('Oscillator Options');
-    o.add(param, 'o1').name("Square").listen().onChange(function(){SetCheck('o1'); audio.oscillatorStart('square');});
-    o.add(param, 'o2').name("Sine").listen().onChange(function(){SetCheck('o2'); audio.oscillatorStart('sine');});
-    o.add(param, 'o3').name("Sawtooth").listen().onChange(function(){SetCheck('o3'); audio.oscillatorStart('sawtooth');});
-    o.add(param, 'o4').name("Triangle").listen().onChange(function(){SetCheck('o4'); audio.oscillatorStart('triangle');});
+    /*let o=gui.addFolder('Delay Options');
+    o.add(param, 'o1').name(".5").listen().onChange(function(){SetCheck('o1'); audio.changeDelay(.5);});
+    o.add(param, 'o2').name("1").listen().onChange(function(){SetCheck('o2'); audio.changeDelay(1);});
+    o.add(param, 'o3').name("3").listen().onChange(function(){SetCheck('o3'); audio.changeDelay(3);});
+    o.add(param, 'o4').name("5").listen().onChange(function(){SetCheck('o4'); audio.changeDelay(5);});*/
     
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);

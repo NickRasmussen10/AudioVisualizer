@@ -3,7 +3,7 @@ let audioCtx;
 
 // **These are "private" properties - these will NOT be visible outside of this module (i.e. file)**
 // 2 - WebAudio nodes that are part of our WebAudio audio routing graph
-let element, sourceNode, analyserNode, gainNode, oscillator;
+let element, sourceNode, analyserNode, gainNode, distortion;
 
 // 3 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -54,11 +54,9 @@ function setupWebaudio(filePath){
     sourceNode.connect(analyserNode);
     analyserNode.connect(gainNode);
     gainNode.connect(audioCtx.destination);
-    oscillator=audioCtx.createOscillator();
-    oscillator.type='sine';
-    oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
-    oscillator.start();
-     
+    
+    distortion=audioCtx.createWaveShaper();
+
 }
 
 function loadSoundFile(filePath){
@@ -72,7 +70,18 @@ function playCurrentSound(){
 function pauseCurrentSound(){
     element.pause();
 }
-
+function enableDistortion(){
+    analyserNode.connect(distortion);
+    distortion.connect(audioCtx.destination);
+}
+function disableDistortion(){
+    analyserNode.disconnect(distortion);
+    distortion.disconnect(audioCtx.destination);
+}
+function changeDistortionValue(value=440){
+    distortion.curve=makeDistortion(value);
+    distortion.oversample='4x';
+}
 function setVolume(value){
     value = Number(value); // make sure that it's a Number rather than a String
     gainNode.gain.value = value;
@@ -85,14 +94,15 @@ function convertElapsedTime(inputSeconds){
     let minutes=Math.floor(inputSeconds/60);
     return minutes + ":" + seconds;
 }
-function oscillatorStart(type){
-    oscillator.type=type;
+function makeDistortion(value){
+    let n_samples=256,
+        curve=new Float32Array(n_samples),
+        deg=Math.PI/180;
+    
+    for(i=0;i<n_samples;i++){
+        let x=i*2/n_samples-1;
+        curve[i]=(3+value)*x*20*deg/(Math.PI+value*Math.abs(x));
+    }
+    return curve;
 }
-function oscillatorOn(){
-    oscillator.connect(audioCtx.destination);
-}
-function oscillatorOff(){
-    oscillator.disconnect(audioCtx.destination);
-}
-
-export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode,element,oscillatorOn,oscillatorOff,oscillatorStart};
+export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode,element,enableDistortion,disableDistortion,changeDistortionValue};
