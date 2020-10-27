@@ -24,6 +24,11 @@ const controllerObject={
     dist:false,
     crowd: 5,
     bars:true,
+    bass: false,
+    treble: false,
+    bassLvl:30,
+    trebleLvl:30,
+    distLvl:20,
     set Volume(value){
         this.volume=value;
         audio.setVolume(value/10);
@@ -74,12 +79,46 @@ const controllerObject={
     },
     set Dist(value){
         this.dist=value;
-        if(value)audio.enableDistortion();
-        else if(value==false)audio.disableDistortion();
+        audio.toggleDistortion(value);
     },
     get Dist(){
         return this.dist;
-    }
+    },
+    set DistLvl(value){
+        this.distLvl=value;
+        audio.changeDistortionValue(value);
+    },
+    get DistLvl(){
+        return this.distLvl;
+    },
+    set Bass(value){
+        this.bass=value;
+        audio.toggleBass(value);
+    },
+    get Bass(){
+        return this.bass;
+    },
+    set Treble(value){
+        this.treble=value;
+        audio.toggleTreble(value);
+    },
+    get Treble(){
+        return this.treble;
+    },
+    set BassLvl(value){
+        this.bassLvl=value;
+        audio.changeBassValue(value);
+    },
+    get BassLvl(){
+        return this.bassLvl;
+    },
+    set TrebleLvl(value){
+        this.trebleLvl=value;
+        audio.changeTrebleValue(value);
+    },
+    get TrebleLvl(){
+        return this.trebleLvl;
+    },
 }
 
 const drawParams = {
@@ -114,15 +153,24 @@ function init(){
     gui.add(controllerObject,'Play').name("Play/Pause");
     gui.add(controllerObject,'Volume',0,100).name('Volume');
     gui.add(controllerObject,'TrackSelect',{SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
-    gui.add(controllerObject,'Gradient').name('Show Gradient');
-    gui.add(controllerObject,'Bars').name('Show Bars');
-    gui.add(controllerObject,'Flashing').name('Flashing Progress Bar');
-    gui.add(controllerObject,'Dist').name('Distortion');
-    gui.add(controllerObject,'Crowd',1,10).name('Crowd Control');
-    let g = gui.addFolder('Gradients');
-    g.add(param,'o1').name("Halloween").listen().onChange(function(){SetCheck('o1'); canvas.ChangeGradient("#e68e00","#000000");});
-    g.add(param,'o2').name("Classic Witch").listen().onChange(function(){SetCheck('o2');  canvas.ChangeGradient("#9305e6","#0af722");});
-    g.add(param,'o3').name("Just Been Stabbed").listen().onChange(function(){SetCheck('o3'); canvas.ChangeGradient("#b00f00","#000000");});
+    
+    let aef=gui.addFolder('Audio Effects');
+    aef.add(controllerObject,'Dist').name('Distortion');
+    aef.add(controllerObject,'DistLvl',0,100).name('Distortion Level');
+    aef.add(controllerObject,'Bass').name('Bass');
+    aef.add(controllerObject,'BassLvl',0,100).name('Bass Level');
+    aef.add(controllerObject,'Treble').name('Treble');
+    aef.add(controllerObject,'TrebleLvl',0,100).name('Treble Level');
+    aef.add(controllerObject,'Crowd',1,10).name('Crowd Control');
+    
+    let g = gui.addFolder('Visual Effects');
+    g.add(controllerObject,'Bars').name('Show Bars');
+    g.add(controllerObject,'Flashing').name('Flashing Progress Bar');
+    g.add(controllerObject,'Gradient').name('Show Gradient');
+    let g1=g.addFolder('Gradients')
+    g1.add(param,'o1').name("Halloween").listen().onChange(function(){SetCheck('o1'); canvas.ChangeGradient("#e68e00","#000000");});
+    g1.add(param,'o2').name("Classic Witch").listen().onChange(function(){SetCheck('o2');  canvas.ChangeGradient("#9305e6","#0af722");});
+    g1.add(param,'o3').name("Just Been Stabbed").listen().onChange(function(){SetCheck('o3'); canvas.ChangeGradient("#b00f00","#000000");});
     
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);
