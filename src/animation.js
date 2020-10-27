@@ -24,7 +24,7 @@ class Vertex{
             let img = document.getElementById(this.children[i].imgID);
             if(this.children[i].imgID == "bone"){
                 let dist = Math.abs(this.children[i].x-this.x) + Math.abs(this.children[i].y-this.y);
-                let scale = this.normalize(dist,0,350); //350 is an arbirary number ah hah hah
+                let scale = 0.15;
                 
                 ctx.save();
                 
