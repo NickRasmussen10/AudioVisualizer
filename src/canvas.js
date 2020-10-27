@@ -16,7 +16,7 @@ function setupCanvas(canvasElement,analyserNodeRef){
 	// create drawing context
 	ctx = canvasElement.getContext("2d");
 	canvasWidth = 1000;
-	canvasHeight = window.innerHeight;
+	canvasHeight = 600;
     console.log(canvasWidth);
     console.log(canvasHeight);
 	// create a gradient that runs top to bottom
@@ -173,9 +173,9 @@ function ChangeGradient(color1, color2){
 }
 
 function updateProgressBar(audioElement,flashing){
-    ctx.clearRect(0,canvasHeight-20,canvasWidth, 10);
+    ctx.clearRect(0,canvasHeight-10,canvasWidth, 10);
     ctx.fillStyle="#000000";
-    ctx.fillRect(0,canvasHeight-20,canvasWidth, 10);
+    ctx.fillRect(0,canvasHeight-10,canvasWidth, 10);
     
     let currentTime=audioElement.currentTime;
     let duration=audioElement.duration;
@@ -188,7 +188,7 @@ function updateProgressBar(audioElement,flashing){
     else{
         ctx.fillStyle="#FFFFFF";
     }
-    ctx.fillRect(0,canvasHeight-20,progress, 10);
+    ctx.fillRect(0,canvasHeight-10,progress, 10);
 }
 
 export {setupCanvas,draw,ChangeGradient,updateProgressBar};
