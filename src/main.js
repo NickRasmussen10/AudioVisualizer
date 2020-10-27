@@ -57,15 +57,6 @@ const controllerObject={
         playing=!playing
         PlayAudio(playing);
     },
-    G1(){
-        canvas.ChangeGradient("#e68e00","#000000");
-    },
-    G2(){
-        canvas.ChangeGradient("#9305e6","#0af722");
-    },
-    G3(){
-        canvas.ChangeGradient("#b00f00","#000000");
-    },
     set Flashing(value){
         this.flash=value;
         flash=value;
@@ -92,10 +83,9 @@ const drawParams = {
     showEmboss: false
 };
 const param={
-    o1:false,
+    o1:true,
     o2:false,
-    o3:false,
-    o4:true
+    o3:false
 };
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -121,14 +111,9 @@ function init(){
     gui.add(controllerObject,'Dist').name('Distortion');
     gui.add(controllerObject,'Crowd',1,10).name('Crowd Control');
     let g = gui.addFolder('Gradients');
-    g.add(controllerObject,'G1').name("Halloween");
-    g.add(controllerObject,'G2').name("Classic Witch");
-    g.add(controllerObject,'G3').name("Just Been Stabbed");
-    /*let o=gui.addFolder('Delay Options');
-    o.add(param, 'o1').name(".5").listen().onChange(function(){SetCheck('o1'); audio.changeDelay(.5);});
-    o.add(param, 'o2').name("1").listen().onChange(function(){SetCheck('o2'); audio.changeDelay(1);});
-    o.add(param, 'o3').name("3").listen().onChange(function(){SetCheck('o3'); audio.changeDelay(3);});
-    o.add(param, 'o4').name("5").listen().onChange(function(){SetCheck('o4'); audio.changeDelay(5);});*/
+    g.add(param,'o1').name("Halloween").listen().onChange(function(){SetCheck('o1'); canvas.ChangeGradient("#e68e00","#000000");});
+    g.add(param,'o2').name("Classic Witch").listen().onChange(function(){SetCheck('o2');  canvas.ChangeGradient("#9305e6","#0af722");});
+    g.add(param,'o3').name("Just Been Stabbed").listen().onChange(function(){SetCheck('o3'); canvas.ChangeGradient("#b00f00","#000000");});
     
     
     canvas.setupCanvas(canvasElement,audio.analyserNode);
