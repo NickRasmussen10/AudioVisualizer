@@ -23,6 +23,7 @@ const controllerObject={
     flash:false,
     dist:false,
     crowd: 5,
+    bars:true,
     set Volume(value){
         this.volume=value;
         audio.setVolume(value/10);
@@ -52,6 +53,13 @@ const controllerObject={
     },
     get Gradient(){
         return this.gradient;
+    },
+    set Bars(value){
+        this.bars=value;
+        drawParams.showBars=value;
+    },
+    get Bars(){
+        return this.bars
     },
     Play(){
         playing=!playing
@@ -107,6 +115,7 @@ function init(){
     gui.add(controllerObject,'Volume',0,100).name('Volume');
     gui.add(controllerObject,'TrackSelect',{SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
     gui.add(controllerObject,'Gradient').name('Show Gradient');
+    gui.add(controllerObject,'Bars').name('Show Bars');
     gui.add(controllerObject,'Flashing').name('Flashing Progress Bar');
     gui.add(controllerObject,'Dist').name('Distortion');
     gui.add(controllerObject,'Crowd',1,10).name('Crowd Control');
