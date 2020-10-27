@@ -226,8 +226,8 @@ class AnimBody{
     }
     
     incrementAudioIndex(max){
-        this.audioIndex++;
-        if(this.audioIndex >= max) this.audioIndex=0;
+        this.audioIndex--;
+        if(this.audioIndex < 0) this.audioIndex=max-1;
     }
     
     draw(ctx){
