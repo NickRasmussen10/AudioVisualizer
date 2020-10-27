@@ -180,6 +180,8 @@ class AnimBody{
             kf[i] = parseInt(kf[i]);
         }
         this.root.AddKeyframe(kf);
+        
+        this.root.setActiveKeyframe(0);
     }
     
     //set gross functions are just a proof of concept. Not the final way of inputing keyframes but I'm low on time for this prototype and javascript is really being a javascript right now
