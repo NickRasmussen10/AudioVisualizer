@@ -1,3 +1,8 @@
+@font-face
+{
+    font-family:Bones;
+    src: url(SpookySkeleton.ttf);
+}
 body {
 	background: #000000;
 	font-family: tahoma, verdana, sans serif;
@@ -9,15 +14,24 @@ canvas {
     width: 100%;
     height:100%;
     position: absolute;
-	background: #fafafa;
+	background: #000000;
+    z-index: 0;
 }
 
 #gui-container{
     position:absolute;
     margin-left: 1rem;
-    z-index: 0;
+    z-index: 2;
 }
 
 .keyframe{
     display: none;
+}
+h1{
+    position: absolute;
+    font-family: Bones;
+    left: 1rem;
+    top: 2rem;
+    z-index: 1;
+    color: white;
 }

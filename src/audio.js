@@ -152,7 +152,7 @@ function makeDistortion(value=20){
     
     for(let i=0;i<n_samples;i++){
         let x=i*2/n_samples-1;
-        curve[i]=(Math.PI+value)*x/(Math.PI+value*Math.abs(x));
+        curve[i]=x*Math.sin(x)*value/5;
     }
     return curve;
 }

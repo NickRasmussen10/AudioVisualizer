@@ -80,7 +80,7 @@ function draw(params={}, animBodies){
     
     ctx.save();
     ctx.fillStyle="#000000";
-    ctx.fillRect(0,canvasHeight-20,canvasWidth, 10);
+    ctx.fillRect(0,canvasHeight-10,canvasWidth, 10);
     ctx.restore();
     
     

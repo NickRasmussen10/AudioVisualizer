@@ -16,6 +16,7 @@ let playing=true;
 let flash=false;
 let crowdSize = 5;
 let a;
+let canvasEle;
 const controllerObject={
     volume : 1,
     track : "media/SSS.mp3",
@@ -26,15 +27,18 @@ const controllerObject={
     bars:true,
     bass: false,
     treble: false,
-    bassLvl:30,
-    trebleLvl:30,
-    distLvl:20,
+    bassLvl:10,
+    trebleLvl:10,
+    distLvl:15,
     set Volume(value){
         this.volume=value;
         audio.setVolume(value);
     },
     get Volume(){
         return this.volume;
+    },
+    FullScreen(){
+        ToggleFullscreen(canvasEle);
     },
     set Crowd(value){
         this.crowd=value;
@@ -144,6 +148,7 @@ function init(){
     audio.setupWebaudio(DEFAULTS.sound1);
     
 	let canvasElement = document.querySelector("canvas"); // hookup <canvas> element
+    canvasEle=canvasElement; //I know this is repetative and gross but dat gui hates logic so this is what we deal with
     
     const gui=new dat.GUI({autoPlace:false,width:400});
     let customContain=document.querySelector("#gui-container");
@@ -152,15 +157,17 @@ function init(){
     
     gui.add(controllerObject,'Play').name("Play/Pause");
     gui.add(controllerObject,'Volume',0,10).name('Volume');
-    gui.add(controllerObject,'TrackSelect',{SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
+    gui.add(controllerObject,'TrackSelect',
+    {SpookyScarySkeletons:"media/SSS.mp3",GhostBusters:"media/GB.mp3",MonsterMash:"media/MM.mp3"}).name('Track');
+    gui.add(controllerObject,'FullScreen').name('Fullscreen (hit play first)');
     
     let aef=gui.addFolder('Audio Effects');
     aef.add(controllerObject,'Dist').name('Distortion');
-    aef.add(controllerObject,'DistLvl',0,100).name('Distortion Level');
+    aef.add(controllerObject,'DistLvl',0,30).name('Distortion Level');
     aef.add(controllerObject,'Bass').name('Bass');
-    aef.add(controllerObject,'BassLvl',0,100).name('Bass Level');
+    aef.add(controllerObject,'BassLvl',0,20).name('Bass Level');
     aef.add(controllerObject,'Treble').name('Treble');
-    aef.add(controllerObject,'TrebleLvl',0,100).name('Treble Level');
+    aef.add(controllerObject,'TrebleLvl',0,20).name('Treble Level');
     aef.add(controllerObject,'Crowd',1,10).name('Crowd Control');
     
     let g = gui.addFolder('Visual Effects');
@@ -219,5 +226,7 @@ function SetCheck(prop){
     }
     param[prop]=true;
 }
-
+function ToggleFullscreen(canvasElement){
+    utils.goFullscreen(canvasElement);
+}
 export {init};
