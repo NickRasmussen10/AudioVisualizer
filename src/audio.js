@@ -3,7 +3,7 @@ let audioCtx;
 
 // **These are "private" properties - these will NOT be visible outside of this module (i.e. file)**
 // 2 - WebAudio nodes that are part of our WebAudio audio routing graph
-let element, sourceNode, analyserNode, gainNode, distortion;
+let element, sourceNode, analyserNode, gainNode, distortion, bassFilter, trebleFilter;
 
 // 3 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -55,7 +55,20 @@ function setupWebaudio(filePath){
     analyserNode.connect(gainNode);
     gainNode.connect(audioCtx.destination);
     
+    bassFilter=audioCtx.createBiquadFilter();
+    bassFilter.type='lowshelf';
+    sourceNode.connect(bassFilter);
+    bassFilter.connect(analyserNode);
+    
+    trebleFilter=audioCtx.createBiquadFilter();
+    trebleFilter.type='highshelf';
+    sourceNode.connect(trebleFilter);
+    trebleFilter.connect(analyserNode);
+    
     distortion=audioCtx.createWaveShaper();
+    distortion.type='distortion';
+    sourceNode.connect(distortion);
+    distortion.connect(analyserNode);
 
 }
 
@@ -70,17 +83,55 @@ function playCurrentSound(){
 function pauseCurrentSound(){
     element.pause();
 }
-function enableDistortion(){
-    analyserNode.connect(distortion);
-    distortion.connect(audioCtx.destination);
+function changeDistortionValue(value,distorted){
+    if(distorted)distortion.curve=makeDistortion(value);
+    else distortion.curve=null;
+    //toggleDistortion();
 }
-function disableDistortion(){
-    analyserNode.disconnect(distortion);
-    distortion.disconnect(audioCtx.destination);
+function changeBassValue(value, bassOn){
+    if(bassOn){
+    bassFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+    bassFilter.gain.setValueAtTime(value,audioCtx.currentTime);
+    }
+    else{bassFilter.gain.setValueAtTime(0,audioCtx.currentTime);}
+    //toggleBass();
 }
-function changeDistortionValue(value=440){
-    distortion.curve=makeDistortion(value);
-    distortion.oversample='4x';
+function changeTrebleValue(value, trebleOn){
+    if(trebleOn){
+    trebleFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+    trebleFilter.gain.setValueAtTime(value,audioCtx.currentTime);
+    }
+    else{
+        trebleFilter.gain.setValueAtTime(0,audioCtx.currentTime);
+    }
+    //toggleTreble();
+}
+function toggleBass(lowshelf,value=15){
+    if(lowshelf){
+        bassFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+        bassFilter.gain.setValueAtTime(value,audioCtx.currentTime);
+    }
+    else{
+        bassFilter.gain.setValueAtTime(0,audioCtx.currentTime);
+    }
+}
+function toggleTreble(highshelf, value=25){
+    if(highshelf){
+        trebleFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+        trebleFilter.gain.setValueAtTime(value,audioCtx.currentTime);
+    }
+    else{
+        trebleFilter.gain.setValueAtTime(0,audioCtx.currentTime);
+    }
+}
+function toggleDistortion(dis,value=20){
+    if(dis){
+        distortion.curve=null;
+        distortion.curve=makeDistortion(value);
+    }
+    else{
+        distortion.curve=null;
+    }
 }
 function setVolume(value){
     value = Number(value); // make sure that it's a Number rather than a String
@@ -94,15 +145,15 @@ function convertElapsedTime(inputSeconds){
     let minutes=Math.floor(inputSeconds/60);
     return minutes + ":" + seconds;
 }
-function makeDistortion(value){
+function makeDistortion(value=20){
     let n_samples=256,
         curve=new Float32Array(n_samples),
         deg=Math.PI/180;
     
-    for(i=0;i<n_samples;i++){
+    for(let i=0;i<n_samples;i++){
         let x=i*2/n_samples-1;
-        curve[i]=(3+value)*x*20*deg/(Math.PI+value*Math.abs(x));
+        curve[i]=(Math.PI+value)*x/(Math.PI+value*Math.abs(x));
     }
     return curve;
 }
-export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode,element,enableDistortion,disableDistortion,changeDistortionValue};
+export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode,element,changeDistortionValue,toggleBass,toggleDistortion,toggleTreble,changeBassValue,changeTrebleValue};
