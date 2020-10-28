@@ -134,7 +134,7 @@ function toggleDistortion(dis,value=20){
     }
 }
 function setVolume(value){
-    value = Number(value); // make sure that it's a Number rather than a String
+    value = Number(value/15); // make sure that it's a Number rather than a String
     gainNode.gain.value = value;
 }
 function convertElapsedTime(inputSeconds){
