@@ -72,7 +72,7 @@ function draw(params={}, animBodies){
     }
 
     for(let a = 0; a < animBodies.length; a++){
-        animBodies[a].setActiveKeyframe(audioData[animBodies[a].audioIndex]);
+        animBodies[a].setActiveKeyframe(audioData[parseInt(animBodies[a].audioIndex)]);
         animBodies[a].incrementAudioIndex(audioData.length);
         animBodies[a].draw(ctx);
     }

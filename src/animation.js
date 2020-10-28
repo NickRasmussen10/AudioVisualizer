@@ -231,7 +231,7 @@ class AnimBody{
     }
     
     incrementAudioIndex(max){
-        this.audioIndex--;
+        this.audioIndex-=0.5;
         if(this.audioIndex < 0) this.audioIndex=max-1;
     }
     
